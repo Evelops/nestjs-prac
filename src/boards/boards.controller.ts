@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { BoardsService } from './boards.service';
 import { Board, BoardStatus } from './board.model';
 import { CreateBoardDto } from './dto/create-board.dto';
@@ -18,8 +18,10 @@ export class BoardsController {
      * express => req, res 형식으로 받았다면 nest에선 @Body 데코레이션으로 
      * client에서 요청한 로직을 받아서 처리함.
      * client에서 보내는 값이 단 하나(title || description) 이라면 @Body('title') title or @Body('description') description으로 받는다. 
+     * nest 프레임워크 내부 built-in-pipes중 하나인 인증 파이프를 게시물 생성시 정의 
      * */ 
     @Post()
+    @UsePipes(ValidationPipe)
     createBoard(
         @Body() CreateBoardDto: CreateBoardDto
         ): Board {
@@ -54,6 +56,5 @@ export class BoardsController {
    ) {
     return this.boardsService.updateBoardStatus(id,status);
    }
-   
-    
+      
 }
