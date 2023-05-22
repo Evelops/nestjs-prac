@@ -34,6 +34,10 @@ export class BoardsService {
    // id 값을 기반으로 특정 게시물을 조회하는 serivce
    getBoardById(id: string): Board {
     return this.boards.find((board) => board.id === id);
+   }
 
+   // id 값을 기반으로 특정 게시물을 삭제하는 service 
+    deleteBoard(id: string): void {
+     this.boards = this.boards.filter((board) => board.id !== id); // boards 배열에 들어있는 board 객체의 id 값이 일치하지 않은 애들은 놔두고, 일치하는 요소만 제거 
    }
 }
