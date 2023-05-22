@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { BoardsService } from './boards.service';
 import { Board } from './board.model';
 import { CreateBoardDto } from './dto/create-board.dto';
@@ -25,4 +25,14 @@ export class BoardsController {
         ): Board {
             return this.boardsService.createBoard(CreateBoardDto);
         }
+    
+    /**
+     * 게시물의 id 값을 기반으로 특정 게시물을 찾기 위한 컨트롤러
+     * post 형식에서 데이터를 받아올 때는, body, header에 담아서 가져오나 Get 요청은 @param 어노테이션으로 쿼리스트링을 받아옴.
+    */
+    @Get('/:id')
+    getBoardById(@Param('id') id: string): Board {
+        return this.boardsService.getBoardById(id);
+    }
+    
 }

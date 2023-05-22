@@ -30,4 +30,10 @@ export class BoardsService {
     this.boards.push(board);
     return board;
    }
+
+   // id 값을 기반으로 특정 게시물을 조회하는 serivce
+   getBoardById(id: string): Board {
+    return this.boards.find((board) => board.id === id);
+
+   }
 }
