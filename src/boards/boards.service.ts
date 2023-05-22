@@ -38,6 +38,17 @@ export class BoardsService {
 
    // id 값을 기반으로 특정 게시물을 삭제하는 service 
     deleteBoard(id: string): void {
-     this.boards = this.boards.filter((board) => board.id !== id); // boards 배열에 들어있는 board 객체의 id 값이 일치하지 않은 애들은 놔두고, 일치하는 요소만 제거 
+     this.boards = this.boards.filter((board) => board.id !== id); // boards 배열에 들어있는 board 객체의 id 값이 일치하지 않은 애들은 놔두고, 일치하는 요소만 삭제
    }
+
+   /**
+    * 특정 게시물 업데이트 하는 service 
+    * @params id => 업데이트 하고자 하는 게시물 id 값 
+    * @params status => 업데이트 하고자 하는 상태값 => boards-model에서 정의한 status 의 enum 객체 값인 public, private 값 두개 중 하나를 기반으로 가져옴. 
+    * */ 
+   updateBoardStatus(id: string, status: BoardStatus): Board {
+    const board = this.getBoardById(id); // 위에서 정의한 게시물 조회 메서드를 사용해서, 넘겨받은 id 값을 기반으로 조회 
+    board.status = status;
+    return board;
+   } 
 }

@@ -1,6 +1,6 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { BoardsService } from './boards.service';
-import { Board } from './board.model';
+import { Board, BoardStatus } from './board.model';
 import { CreateBoardDto } from './dto/create-board.dto';
 @Controller('boards')
 export class BoardsController {
@@ -42,5 +42,18 @@ export class BoardsController {
    delBoardById(@Param('id') id: string): void{
     this.boardsService.deleteBoard(id);
    }
+
+   /**
+    * 특정 id를 가지는 board의 상태 값을 업데이트 하기 위한 contorller  
+    * id 값은 @params으로 받아오고, status는 @Body에 담아서 가져옴.
+    */
+   @Patch("/:id/status")
+   updateBoardStatus(
+    @Param('id') id: string,
+    @Body('status') status: BoardStatus,
+   ) {
+    return this.boardsService.updateBoardStatus(id,status);
+   }
+   
     
 }
