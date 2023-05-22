@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, UsePipes, Validation
 import { BoardsService } from './boards.service';
 import { Board, BoardStatus } from './board.model';
 import { CreateBoardDto } from './dto/create-board.dto';
+import { BoardStatusValidationPipe } from './pipes/board-status-validations.pipe';
 @Controller('boards')
 export class BoardsController {
     // controller에 대해서 서비스에 대한 di 주입을 해주어야함. 
@@ -48,11 +49,12 @@ export class BoardsController {
    /**
     * 특정 id를 가지는 board의 상태 값을 업데이트 하기 위한 contorller  
     * id 값은 @params으로 받아오고, status는 @Body에 담아서 가져옴.
+    * status 상태에서 유효성 체크를 해야하기 때문에, 커스텀 pipe를 status에 추가하여 유효성 검증 
     */
    @Patch("/:id/status")
    updateBoardStatus(
     @Param('id') id: string,
-    @Body('status') status: BoardStatus,
+    @Body('status',BoardStatusValidationPipe) status: BoardStatus,
    ) {
     return this.boardsService.updateBoardStatus(id,status);
    }
