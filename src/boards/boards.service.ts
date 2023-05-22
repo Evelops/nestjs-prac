@@ -20,8 +20,8 @@ export class BoardsService {
     //title, description을 기반으로 게시물을 생성하고, default stauts 는 Public으로 선정 
     const board: Board = {
         id:uuid(), // 아직 별도로 db를 연결하지 않았기에, 게시글의 고유값을 부여할 때 uuid 모듈을 기반으로 정의 
-        title: title,
-        description: description,
+        title,
+        description,
         status: BoardStatus.PUBLIC
     }
     // 새롭게 들어온 board 객체를 맨상단에 정의한 boards 배열의 인자값으로 넣어주고 리턴.

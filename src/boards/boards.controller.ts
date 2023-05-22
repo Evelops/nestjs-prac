@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { BoardsService } from './boards.service';
 import { Board } from './board.model';
 @Controller('boards')
@@ -11,4 +11,18 @@ export class BoardsController {
     getAllBoard(): Board[]{
         return this.boardsService.getAllBoards();
     }
+    
+    /**
+     * 게시물 생성 부분으로 요청이 들어왔을 때, 게시물 생성 서비스 정의 
+     * express => req, res 형식으로 받았다면 nest에선 @Body 데코레이션으로 
+     * client에서 요청한 로직을 받아서 처리함.
+     * client에서 보내는 값이 단 하나(title || description) 이라면 @Body('title') title or @Body('description') description으로 받는다. 
+     * */ 
+    @Post()
+    createBoard(
+        @Body('title') title:string,
+        @Body('description') description:string
+        ): Board {
+            return this.boardsService.createBoard(title, description);
+        }
 }
