@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Board, BoardStatus } from './board.model';
 import {v1 as uuid} from 'uuid';
+import { CreateBoardDto } from './dto/create-board.dto';
 @Injectable()
 export class BoardsService {
     private boards: Board[] = [];
@@ -16,8 +17,9 @@ export class BoardsService {
     /**
      * 게시물을 생성하는 service의 생성 메서드 정의.
     */
-   createBoard(title: string, description: string) {
+   createBoard(CreateBoardDto: CreateBoardDto) {
     //title, description을 기반으로 게시물을 생성하고, default stauts 는 Public으로 선정 
+    const {title, description} = CreateBoardDto; // DTO에 정의된 title, description 부분을 구조 분해 할당으로 한 번에 정의.
     const board: Board = {
         id:uuid(), // 아직 별도로 db를 연결하지 않았기에, 게시글의 고유값을 부여할 때 uuid 모듈을 기반으로 정의 
         title,
