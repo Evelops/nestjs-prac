@@ -2,8 +2,42 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { BoardStatus } from './board-status.enum';
 import {v1 as uuid} from 'uuid';
 import { CreateBoardDto } from './dto/create-board.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { BoardRepository } from './board.repository';
+import { Board } from './board.entity';
 @Injectable()
 export class BoardsService {
+    // db 로직 관련 처리는 repository에서 이루어져야 하기 때문에, service에 injection(repository) 주입 
+    constructor(
+        @InjectRepository(BoardRepository)
+        private boardRepository: BoardRepository,
+    ) {}
+
+    // 게시물 생성 
+    async createBoard(createBoardDto: CreateBoardDto) : Promise <Board> {
+        const {title, description} = createBoardDto;
+
+        const board = this.boardRepository.create({
+            title,
+            description,
+            status:BoardStatus.PUBLIC
+        })
+
+        await this.boardRepository.save(board);
+
+        return board;
+    }
+    
+
+    //id 값 기반 게시물 조회
+    async getBoardById(id: number): Promise <Board> {
+        const found = await this.boardRepository.findOneBy({id});
+
+        if(!found) {
+            throw new NotFoundException(`Can't find Board with id ${id}`);
+        }
+        return found;
+    }
 
 //     /**
 //      * boards 배열에 들어있는 모든 값을 리턴 
@@ -29,6 +63,8 @@ export class BoardsService {
 //     this.boards.push(board);
 //     return board;
 //    }
+
+
 
 //    // id 값을 기반으로 특정 게시물을 조회하는 serivce
 //    getBoardById(id: string): Board {

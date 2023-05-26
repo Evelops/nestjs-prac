@@ -3,6 +3,7 @@ import { BoardsService } from './boards.service';
 import { BoardStatus } from './board-status.enum';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { BoardStatusValidationPipe } from './pipes/board-status-validations.pipe';
+import { Board } from './board.entity';
 @Controller('boards')
 export class BoardsController {
     // controller에 대해서 서비스에 대한 di 주입을 해주어야함. 
@@ -28,6 +29,18 @@ export class BoardsController {
 //         ): Board {
 //             return this.boardsService.createBoard(CreateBoardDto);
 //         }
+
+    @Get('/:id')
+    getBoardById(@Param('id') id:number) : Promise<Board> {
+        //param으로 받아온 id 값을 controller에서 service로 넣어줌.
+        return this.boardsService.getBoardById(id);
+    }
+
+    @Post()
+    @UsePipes(ValidationPipe)
+    createBoard(@Body() CreateBoardDto: CreateBoardDto) : Promise <Board> {
+        return this.boardsService.createBoard(CreateBoardDto);
+    }
     
 //     /**
 //      * 게시물의 id 값을 기반으로 특정 게시물을 찾기 위한 컨트롤러
